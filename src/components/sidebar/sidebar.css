@@ -1,0 +1,54 @@
+.sidebar {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f0f4f9;
+  justify-content: space-between;
+}
+.sidebar img {
+  width: 20px;
+}
+.sidebar .menu {
+  display: block;
+  margin-bottom: 50px;
+  cursor: pointer;
+}
+.new-chat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 15px;
+  border-radius: 5000px;
+  background-color: #e6eaf1;
+  justify-content: center;
+  cursor: pointer;
+}
+.sidebar .recents {
+  margin-top: 50px;
+  margin-bottom: 25px;
+}
+.recent,
+.bottom {
+  display: flex;
+  flex-direction: column;
+
+  cursor: pointer;
+}
+.recent-chat:hover,
+.bottom-item:hover {
+  background-color: #e2e6eb;
+}
+.recent-chat,
+.bottom-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  border-radius: 500px;
+}
+
+@media screen and (max-width: 1025px) {
+  .sidebar {
+    display: none;
+  }
+}
