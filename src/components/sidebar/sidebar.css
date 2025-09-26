@@ -23,28 +23,44 @@
   justify-content: center;
   cursor: pointer;
 }
-.sidebar .recents {
-  margin-top: 50px;
-  margin-bottom: 25px;
-}
-.recent,
+
 .bottom {
   display: flex;
   flex-direction: column;
 
   cursor: pointer;
 }
-.recent-chat:hover,
+
 .bottom-item:hover {
   background-color: #e2e6eb;
 }
-.recent-chat,
+
 .bottom-item {
   display: flex;
   align-items: center;
   gap: 5px;
   padding: 10px;
   border-radius: 500px;
+}
+.recent {
+  margin-top: 70px;
+}
+.recent h3 {
+  color: #585858;
+}
+
+.recent-chats-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.recent-chats-wrapper span {
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.recent-chats-wrapper span:hover {
+  background-color: #e2e6eb;
 }
 
 @media screen and (max-width: 1025px) {

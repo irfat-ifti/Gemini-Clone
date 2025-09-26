@@ -3,6 +3,7 @@ import { assets } from "../../assets/assets";
 import { useContext } from "react";
 import { Context } from "../../contexts/COntext";
 import NewChat from "./NewChat";
+import RecentChats from "./RecentChats";
 function Sidebar() {
   const { setNewChat, extended, setExtended } = useContext(Context);
 
@@ -19,6 +20,7 @@ function Sidebar() {
             className="menu"
           />
           <NewChat setNewChat={setNewChat} extended={extended} />
+          <RecentChats />
         </div>
         <div className="bottom">
           <div className="bottom-item">

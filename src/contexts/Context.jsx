@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { askGemini } from "../gemini";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -15,6 +15,12 @@ export default function ContextProvider({ children }) {
   const [cardClick, setCardClick] = useState(false);
   const [newChat, setNewChat] = useState(false);
   const [extended, setExtended] = useState(false);
+  const [recentChats, setRecentChats] = useState([]);
+  const [recentChatLists, setRecentChatLists] = useState([]);
+
+  useEffect(() => {
+    setRecentChats(prevPrompt);
+  }, [prevPrompt, setRecentChats]);
 
   const onSent = async (prompt) => {
     setRecentPrompt(input);
@@ -22,8 +28,10 @@ export default function ContextProvider({ children }) {
     setLoading(true);
     setShowResult(true);
     const response = await askGemini(prompt);
+
     setResultData(response);
     setLoading(false);
+
     setPrevPrompt((prev) => [
       ...prev,
       {
@@ -32,6 +40,11 @@ export default function ContextProvider({ children }) {
       },
     ]);
   };
+  if (newChat && !recentChatLists.includes(recentChats)) {
+    setRecentChatLists((prev) => [...prev, recentChats]);
+  }
+  const filteredList = recentChatLists.filter((inner) => inner.length > 0);
+
   const contextValue = {
     input,
     setInput,
@@ -51,6 +64,10 @@ export default function ContextProvider({ children }) {
     setCardClick,
     extended,
     setExtended,
+    recentChats,
+    setRecentChatLists,
+    recentChatLists,
+    filteredList,
   };
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 }

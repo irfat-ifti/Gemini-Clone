@@ -26,6 +26,7 @@ export default function Main() {
     setCardClick,
     cardText,
     cardClick,
+    storeRecentChat,
   } = useContext(Context);
 
   const [typedText, setTypedText] = useState("");
@@ -86,6 +87,7 @@ export default function Main() {
               typedText={typedText}
               loading={loading}
               recentPrompt={recentPrompt}
+              storeRecentChat={storeRecentChat}
             />
           )}
         </div>
