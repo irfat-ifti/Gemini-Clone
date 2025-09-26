@@ -1,8 +1,12 @@
 import "./main.css";
-import { assets } from "../../assets/assets";
+// import { assets } from "../../assets/assets";
 import { useContext, useState, useEffect } from "react";
 import { Context } from "../../contexts/COntext";
-import { MoonLoader } from "react-spinners";
+import MainBottom from "./MainBottom";
+import Cards from "./Cards";
+import Nav from "./Nav";
+import Greet from "./Greet";
+import InputResult from "./InputResult";
 
 export default function Main() {
   const {
@@ -14,6 +18,14 @@ export default function Main() {
     setInput,
     input,
     prevPrompt,
+    setRecentChats,
+    newChat,
+    setNewChat,
+    setPrevPrompt,
+    setCardText,
+    setCardClick,
+    cardText,
+    cardClick,
   } = useContext(Context);
 
   const [typedText, setTypedText] = useState("");
@@ -24,131 +36,65 @@ export default function Main() {
       setTypedText("");
       setCurrentIndex(0);
     }
-  }, [resultData, loading]);
+    if (newChat) {
+      setPrevPrompt([]);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resultData, loading, setRecentChats, newChat]);
 
   useEffect(() => {
     if (resultData && !loading && currentIndex < resultData.length) {
       const timeout = setTimeout(() => {
         setTypedText((prev) => prev + resultData[currentIndex]);
         setCurrentIndex((prev) => prev + 1);
-      }, 20);
+      }, 10);
 
       return () => clearTimeout(timeout);
     }
   }, [currentIndex, loading, resultData]);
 
+  useEffect(() => {
+    if (cardClick) {
+      onSent(cardText);
+      setCardClick(false);
+      setNewChat(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardText, cardClick]);
+
+  const cardHandler = (e) => {
+    const card = e.currentTarget.firstElementChild.innerText;
+    setInput(card);
+    setCardText(card);
+    setCardClick(true);
+  };
+
   return (
     <div className="main">
       <div className="container">
         <div className="main-top">
-          <nav className="nav">
-            <span className="logo">Gemini</span>
-            <img className="user-icon" src={assets.user_icon} alt="" />
-          </nav>
-          {!showResult ? (
+          <Nav />
+          {!showResult || newChat ? (
             <div className="main-container">
-              <div className="greet">
-                <h1 className="greeting-message">
-                  <span>Hello, Dev.</span>
-                  <br />
-                  How can I help you today?
-                </h1>
-              </div>
-              <div className="cards">
-                <div className="card">
-                  <p>
-                    Suggest beautiful places to see on an upcoming road trip
-                  </p>
-                  <img src={assets.compass_icon} alt="" />
-                </div>
-                <div className="card">
-                  <p>Briefly summarize this concept: urban planning</p>
-                  <img src={assets.bulb_icon} alt="" />
-                </div>
-                <div className="card">
-                  <p>Brainstorm team bonding activities for our work retreat</p>
-                  <img src={assets.message_icon} alt="" />
-                </div>
-                <div className="card">
-                  <p>Tell me about React js and React native</p>
-                  <img src={assets.code_icon} alt="" />
-                </div>
-              </div>
+              <Greet />
+              <Cards cardHandler={cardHandler} />
             </div>
           ) : (
-            <div className="input-result">
-              {prevPrompt.map((chat, index) => (
-                <div key={index}>
-                  <div className="user-input">
-                    <img
-                      className="user-icon"
-                      src={assets.user_icon}
-                      alt="user"
-                    />
-                    <span>{chat.input}</span>
-                  </div>
-                  <div className="gemini-response-container">
-                    <img
-                      className="user-icon"
-                      src={assets.gemini_icon}
-                      alt=""
-                    />
-                    {index === prevPrompt.length - 1 ? (
-                      <span className="gemini-response">{typedText}</span>
-                    ) : (
-                      <span className="gemini-response">{chat.response}</span>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {loading && (
-                <>
-                  <div className="user-input">
-                    <img className="user-icon" src={assets.user_icon} alt="" />
-                    <span>{recentPrompt}</span>
-                  </div>
-                  <div className="gemini-response-container">
-                    <img
-                      className="user-icon"
-                      src={assets.gemini_icon}
-                      alt=""
-                    />
-                    {loading && (
-                      <span className="gemini-thinking">
-                        Thinking... <MoonLoader size={16} />
-                      </span>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+            <InputResult
+              prevPrompt={prevPrompt}
+              typedText={typedText}
+              loading={loading}
+              recentPrompt={recentPrompt}
+            />
           )}
         </div>
-        <div className="main-bottom">
-          <div className="search-box">
-            <input
-              placeholder="Enter a prompt"
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-            <div className="icons">
-              <img src={assets.gallery_icon} alt="" />
-              <img src={assets.mic_icon} alt="" />
-              {input !== "" ? (
-                <img
-                  src={assets.send_icon}
-                  alt=""
-                  onClick={() => onSent(input)}
-                />
-              ) : null}
-            </div>
-          </div>
-          <p className="bottom-info">
-            Gemini may display inaccurate info, including about people, so
-            double-check its responses. Your privacy and Gemini Apps
-          </p>
-        </div>
+        <MainBottom
+          input={input}
+          setInput={setInput}
+          onSent={onSent}
+          setNewChat={setNewChat}
+        />
       </div>
     </div>
   );

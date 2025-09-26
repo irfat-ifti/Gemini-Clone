@@ -11,6 +11,10 @@ export default function ContextProvider({ children }) {
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
+  const [cardText, setCardText] = useState("");
+  const [cardClick, setCardClick] = useState(false);
+  const [newChat, setNewChat] = useState(false);
+  const [extended, setExtended] = useState(false);
 
   const onSent = async (prompt) => {
     setRecentPrompt(input);
@@ -23,7 +27,7 @@ export default function ContextProvider({ children }) {
     setPrevPrompt((prev) => [
       ...prev,
       {
-        input: input,
+        input: cardClick ? cardText : input,
         response: response,
       },
     ]);
@@ -39,6 +43,14 @@ export default function ContextProvider({ children }) {
     loading,
     resultData,
     onSent,
+    newChat,
+    setNewChat,
+    setCardText,
+    cardText,
+    cardClick,
+    setCardClick,
+    extended,
+    setExtended,
   };
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 }

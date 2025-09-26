@@ -239,12 +239,18 @@
   gap: 12px;
   margin-bottom: 35px;
 }
+.user-input {
+  justify-content: flex-end;
+}
 .input-result {
+  max-height: 75vh;
+  overflow: auto; /* Allows content to scroll */
+  scrollbar-width: none; /* For Firefox */
   padding: 15px;
   /* width: 900px; */
   margin: 0 auto;
 }
-.user-input span,
+
 .gemini-response-container .gemini-response,
 .gemini-thinking {
   background-color: rgb(221, 221, 221);
@@ -252,6 +258,16 @@
   border-top-left-radius: 15px;
   border-bottom-right-radius: 15px;
   border-top-right-radius: 15px;
+  max-width: 80%;
+}
+.user-input span {
+  background-color: rgb(221, 221, 221);
+  padding: 12px 25px;
+  border-top-left-radius: 15px;
+  /* border-bottom-right-radius: 15px; */
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  max-width: 80%;
 }
 .gemini-thinking {
   display: flex;
@@ -333,6 +349,11 @@
     font-size: 10px;
     padding: 0 10px;
   }
+  .gemini-response-container .gemini-response,
+  .gemini-thinking,
+  .user-input span {
+    max-width: 80%;
+  }
 }
 
 /* Tablet Styles */
@@ -380,8 +401,9 @@
     width: 1200px;
   }
 
-  .main .main-bottom {
-    width: 1200px;
+  .main .main-bottom,
+  .input-result {
+    width: 800px;
   }
 
   .main .cards {
